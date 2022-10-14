@@ -275,4 +275,14 @@ JOptionPane.showMessageDialog(this, "Erro ao alterar jogo!");
     private javax.swing.JTextField txtTipo;
     private javax.swing.JTextField txtTitulo;
     // End of variables declaration//GEN-END:variables
+
+    private static class TelaListaJogo {
+
+        public TelaListaJogo() {
+        }
+
+        private void listarJogos() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
 }

@@ -30,9 +30,11 @@ public class Principal extends javax.swing.JFrame {
         btnFilmes = new javax.swing.JButton();
         btnJogos = new javax.swing.JButton();
         btnCategorias = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnFilmes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logos/pngwing.com (6).png"))); // NOI18N
         btnFilmes.setText("Filmes");
         btnFilmes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -40,6 +42,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnJogos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logos/pngwing.com (7).png"))); // NOI18N
         btnJogos.setText("Jogos");
         btnJogos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -47,6 +50,7 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        btnCategorias.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logos/pngwing.com (5).png"))); // NOI18N
         btnCategorias.setText("Categorias");
         btnCategorias.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -54,28 +58,37 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logos/text (3).gif"))); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(btnCategorias)
-                .addGap(31, 31, 31)
-                .addComponent(btnFilmes)
-                .addGap(29, 29, 29)
-                .addComponent(btnJogos)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(btnCategorias)
+                        .addGap(49, 49, 49)
+                        .addComponent(btnFilmes)
+                        .addGap(56, 56, 56)
+                        .addComponent(btnJogos))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(123, 123, 123)
+                        .addComponent(jLabel1)))
                 .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(204, Short.MAX_VALUE)
+                .addGap(25, 25, 25)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnFilmes)
-                    .addComponent(btnJogos)
-                    .addComponent(btnCategorias))
-                .addGap(64, 64, 64))
+                    .addComponent(btnCategorias)
+                    .addComponent(btnFilmes, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnJogos))
+                .addGap(38, 38, 38))
         );
 
         pack();
@@ -132,5 +145,16 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnCategorias;
     private javax.swing.JButton btnFilmes;
     private javax.swing.JButton btnJogos;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
+
+    private static class TelaListaJogo {
+
+        public TelaListaJogo() {
+        }
+
+        private void setVisible(boolean b) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+    }
 }

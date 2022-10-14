@@ -1,22 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package visao;
-
-/**
- *
- * @author erick.latocheski
- */
+import entidades.Filme;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import persistencia.FilmeDAO;
 public class TelaListaFilme extends javax.swing.JFrame {
+private List<Filme> listaFilmes;
 
-    /**
-     * Creates new form TelaListaFilme
-     */
-    public TelaListaFilme() {
-        initComponents();
-    }
+public TelaListaFilme() {
+initComponents();
+montarListaFilmes(); 
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,10 +30,25 @@ public class TelaListaFilme extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
 
         btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         tabFilmes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -84,6 +93,56 @@ public class TelaListaFilme extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        int linha = tabFilmes.getSelectedRow();
+        if (linha == -1) {
+JOptionPane.showMessageDialog (this, "Selecione um filme para alterar!");
+        } else {
+TelaCadastroFilme cadastro = new TelaCadastroFilme (this);
+// Pega o filme selecionado e envia para a tela de cadastro 
+cadastro.setFilme(listaFilmes.get (linha));
+cadastro.setVisible(true); 
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        new TelaCadastroFilme(this).setVisible(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tabFilmes.getSelectedRow();
+        if (linha == -1) {
+JOptionPane.showMessageDialog (this, "Selecione um filme para excluir!");
+        } else {
+Filme filme = listaFilmes.get (linha);
+String mensagem = "Deseja realmente excluir o filme " + filme.getTitulo() + "?";
+int opcao = JOptionPane.showConfirmDialog (this, mensagem, "Confirme a exclusão",
+JOptionPane.YES_NO_OPTION);
+if (opcao == JOptionPane.YES_OPTION) {
+if (FilmeDAO.excluir(filme.getId())) {
+montarListaFilmes (); // atualizar a lista de jogos
+JOptionPane.showMessageDialog (this, "Filme excluído com sucesso!");
+            } else {
+JOptionPane.showMessageDialog(this, "Erro ao excluir o Filme!"); 
+            }
+        }
+        }
+    }
+public void montarListaFilmes () {
+listaFilmes = FilmeDAO.listar();
+DefaultTableModel modelo = (DefaultTableModel) tabFilmes.getModel();
+modelo.setRowCount(0); // Limpar os itens da tabela
+for (Filme filme : listaFilmes) {
+    Object[] linha = {
+filme.getTitulo (),
+        filme.getCategoria().getNome(),
+        filme.getPreco(),
+        filme.getNumeroDias()
+    };
+modelo.addRow (linha); 
+}
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -118,9 +177,7 @@ public class TelaListaFilme extends javax.swing.JFrame {
             }
         });
     }
-
-    void montarListaFilmes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

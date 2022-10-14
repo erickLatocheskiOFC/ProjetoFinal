@@ -3,19 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package visao;
+package Visao;
 
-/**
- *
- * @author erick.latocheski
- */
+import entidades.Jogo;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import persistencia.JogoDAO;
+
 public class TelaListaJogo extends javax.swing.JFrame {
 
+    private List<Jogo> listaJogos;
+
     /**
-     * Creates new form TelaListaJogo
+     * Creates new torm TelaListaJogo
      */
     public TelaListaJogo() {
         initComponents();
+        listarJogos();
     }
 
     /**
@@ -27,21 +32,130 @@ public class TelaListaJogo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnNovo = new javax.swing.JButton();
+        btnAlterar = new javax.swing.JButton();
+        btnExcluir = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tabFilmes = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnNovo.setText("Novo");
+        btnNovo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNovoActionPerformed(evt);
+            }
+        });
+
+        btnAlterar.setText("Alterar");
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
+
+        btnExcluir.setText("Excluir");
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
+
+        tabFilmes.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Titulo", "Categoria", "Preço", "N°Dias"
+            }
+        ));
+        jScrollPane1.setViewportView(tabFilmes);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(141, Short.MAX_VALUE)
+                .addComponent(btnNovo)
+                .addGap(92, 92, 92)
+                .addComponent(btnAlterar)
+                .addGap(96, 96, 96)
+                .addComponent(btnExcluir)
+                .addGap(103, 103, 103))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(191, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAlterar)
+                    .addComponent(btnExcluir)
+                    .addComponent(btnNovo))
+                .addGap(44, 44, 44)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNovoActionPerformed
+        new TelaCadastroJogo(this).setVisible(true);
+    }//GEN-LAST:event_btnNovoActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        int linha = tabJogos.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um jogo para alterar!");
+        } else {
+            TelaCadastroJogo cadastro = new TelaCadastroJogo(this);
+// Pega o jogo selecionado e envia para a tela de cadastro
+            cadastro.setJogo(listaJogos.get(linha));
+            cadastro.getVisible(true);
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        int linha = tabJogos.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um jogo para excluir!");
+        } else {
+            Jogo jogo = listaJogos.get(linha);
+            String mensagem = "Deseja realmente excluir o jogo " + jogo.getTitulo() + "?";
+            int opcao = JOptionPane.showConfirmDialog(this, mensagem, "Confirme a exclusão",
+                    JOptionPane.YES_NO_OPTION);
+
+            if (opcao == JOptionPane.YES_OPTION) {
+                if (JogoDAO.excluir(jogo.getId())) {
+                    listarJogos(); // atualizar a lista de jogos
+                    JOptionPane.showMessageDialog(this, "Jogo excluido com sucesso!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Erro ao excluir o jogo!");
+
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
+            }
+
+        }
+    }
+
+    public void listarJogos() {
+        listaJogos = JogoDAO.listar();
+        DefaultTableModel modelo;
+        modelo = (DefaultTableModel)tabJogos.getModel();
+        modelo.setRowCount(0); // Limpar os itens da tabela
+        for (Jogo j : listaJogos) {
+            Object[] linha = {
+                j.getTitulo(),
+                j.getCategoria().getNome(),
+                j.getPreco(),
+                j.getNumeroDias()
+            };
+            modelo.addRow(linha);
+        }
+    
+    }
 
     /**
      * @param args the command line arguments
@@ -78,10 +192,25 @@ public class TelaListaJogo extends javax.swing.JFrame {
         });
     }
 
-    void listarJogos() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlterar;
+    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnNovo;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tabFilmes;
     // End of variables declaration//GEN-END:variables
+    
+   
+   
+    
+
+    private static class tabJogos {
+
+        private static int getSelectedRow() {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+        public tabJogos() {
+        }
+    }
 }
